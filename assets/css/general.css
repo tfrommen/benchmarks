@@ -1,0 +1,29 @@
+#results {
+	border-collapse: collapse;
+}
+
+#results th,
+#results td {
+	border: 1px solid #000;
+	padding: .25em;
+}
+
+#results thead tr > * {
+	border-bottom-width: 3px;
+}
+
+#results tr > :first-child {
+	border-right-width: 3px;
+}
+
+#results tbody td {
+	text-align: right;
+}
+
+#results td.min {
+	background: #cfc;
+}
+
+#results td.max {
+	background: #fcc;
+}
