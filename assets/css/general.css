@@ -12,8 +12,9 @@
 	border-bottom-width: 3px;
 }
 
-#results tr > :first-child {
-	border-right-width: 3px;
+#results tr > :first-child + *,
+#results tr > .algorithm + :not(.algorithm) {
+	border-left-width: 3px;
 }
 
 #results tbody td {

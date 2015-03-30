@@ -8,9 +8,7 @@
 	<title>Benchmarks</title>
 </head>
 <body>
-<header>
-	<h1>Benchmarks</h1>
-</header>
+<h1>Benchmarks</h1>
 <ul>
 	<?php
 	foreach ( glob( '*.php' ) as $file ) {

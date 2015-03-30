@@ -10,11 +10,9 @@
 	<link href="assets/css/general.css" media="all" rel="stylesheet">
 </head>
 <body>
-<header>
-	<h1>Benchmarks: <code>array_intersect_key</code></h1>
+<h1>Benchmarks: <code>array_intersect_key</code></h1>
 
-	<h2>Filter All Array Elements Having a Key from a Predefined Set of Keys</h2>
-</header>
+<h2>Filter All Array Elements Having a Key from a Predefined Set of Keys</h2>
 <hr>
 <h3>The Data Sets</h3>
 All data sets consist of one array having a given number of elements, and another array having some random keys of the first array (as values). The data sets will be generated using the following functions:
@@ -53,8 +51,7 @@ function get_some_of_the_keys( array $keys_and_values, $count ) {
 }
 </pre>
 <?php
-$count = $factor = 8;
-for ( $id = 1; $id <= 3; $id++, $count *= $factor ) {
+for ( $id = 1, $count = $factor = 8; $id <= 3; $id++, $count *= $factor ) {
 	print_data_set_block( $id, $count );
 }
 ?>
@@ -177,8 +174,7 @@ function print_data_set_block( $id, $count ) {
 	?>
 	<h4>Data Set <?php echo $id; ?></h4>
 	<p>
-		This data set consists of an array <em>A</em> with <?php echo $count; ?> elements, and an array
-		<em>B</em> with <?php echo $count / 4; ?> random keys from <em>A</em> (as values).
+		This data set consists of an array with <?php echo $count; ?> elements, and another array with <?php echo $count / 4; ?> random keys from the first array (as values).
 	</p>
 	<pre>
 $count = <?php echo $count; ?>;
@@ -337,15 +333,15 @@ function algorithm_5( $keys_and_values, $some_of_the_keys ) {
 // Benchmark
 $results = array();
 
-$count = $factor = 8;
-for ( $data_set = 1; $data_set <= 3; $data_set++, $count *= $factor ) {
+for ( $data_set = 1, $count = $factor = 8; $data_set <= 3; $data_set++, $count *= $factor ) {
 	$keys_and_values = get_keys_and_values( $count );
 	$some_of_the_keys = get_some_of_the_keys( $keys_and_values, $count / 4 );
 
 	for ( $algorithm = 1; $algorithm <= 5; $algorithm++ ) {
+		flush();
 		$start = microtime();
 		run_algorithm( $algorithm, $keys_and_values, $some_of_the_keys );
-		$results[ $data_set ][ $algorithm ] = number_format( microtime() - $start, 24 );
+		$results[ $data_set ][ $algorithm ] = microtime() - $start;
 	}
 }
 ?>
@@ -356,7 +352,7 @@ for ( $data_set = 1; $data_set <= 3; $data_set++, $count *= $factor ) {
 	<tr>
 		<th></th>
 		<?php foreach ( array_keys( reset( $results ) ) as $algorithm ) : ?>
-			<th>Algorithm <?php echo $algorithm; ?></th>
+			<th class="algorithm">Algorithm <?php echo $algorithm; ?></th>
 		<?php endforeach; ?>
 		<th>Difference</th>
 		<th>Percent</th>
@@ -367,32 +363,31 @@ for ( $data_set = 1; $data_set <= 3; $data_set++, $count *= $factor ) {
 		<?php
 		$min = min( $algorithms );
 		$max = max( $algorithms );
-		$diff = number_format( $max - $min, 24 );
-		$percent = number_format( 100 / $min * $max, 2, '.', '' );
+		$diff = $max - $min;
+		$percent = 100 * $max / $min;
 		?>
 		<tr>
 			<th>Data Set <?php echo $data_set; ?></th>
 			<?php foreach ( $algorithms as $time ) : ?>
 				<?php
-				$class = '';
-				$classes = array();
+				$class = 'algorithm';
 				if ( $time === $min ) {
-					$classes[ ] = 'min';
+					$class .= ' min';
 				} elseif ( $time === $max ) {
-					$classes[ ] = 'max';
-				}
-				if ( $classes ) {
-					$class = ' class="' . implode( ' ', $classes ) . '"';
+					$class .= ' max';
 				}
 				?>
-				<td<?php echo $class; ?>><?php echo $time; ?></td>
+				<td class="<?php echo $class; ?>"><?php echo number_format( $time, 24 ); ?></td>
 			<?php endforeach; ?>
-			<td>+<?php echo $diff; ?> ms</td>
-			<td>+<?php echo $percent; ?> %</td>
+			<td>+<?php echo number_format( $diff, 24 ); ?> ms</td>
+			<td>+<?php echo number_format( $percent, 2, '.', '' ); ?> %</td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>
 </table>
+<p>
+	This server is running <strong>PHP <?php echo phpversion(); ?></strong>.
+</p>
 <hr>
 If you are interested in the source code, please have a look at the according <a
 	href="https://github.com/tfrommen/benchmarks" rel="external">GitHub repository</a>.
