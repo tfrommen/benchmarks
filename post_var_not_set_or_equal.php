@@ -139,7 +139,7 @@ for ( $data_set = 1; $data_set <= 3; $data_set++ ) {
 			unset( $_POST[ $key ] );
 	}
 
-	for ( $algorithm = 1; $algorithm <= 2; $algorithm++ ) {
+	for ( $algorithm = 1; $algorithm <= 3; $algorithm++ ) {
 		flush();
 		$start = microtime();
 		call_user_func( 'algorithm_' . $algorithm, $key, $value );
