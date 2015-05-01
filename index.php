@@ -1,13 +1,15 @@
 <?php # -*- coding: utf-8 -*-
 
-require_once 'inc/functions.php';
+$index_file = basename( __FILE__ );
+
+require_once __DIR__ . '/inc/functions.php';
 
 print_header( 'Benchmarks' );
 
 echo '<ul>';
 
 foreach ( glob( '*.php' ) as $file ) {
-	if ( 'index.php' === $file ) {
+	if ( $index_file === $file ) {
 		continue;
 	}
 
